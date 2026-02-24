@@ -1,0 +1,88 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { ArrowLeft, ExternalLink, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import type { Database } from '../../types/database.types';
+import ProjectLinker from '../ProjectLinker.astro';
+
+type Project = Database['public']['Tables']['projects']['Row'];
+
+interface Props {
+  lang: 'es' | 'en';
+  project: Project;
+}
+
+const { lang, project } = Astro.props;
+const t = useTranslations(lang);
+
+// Necesitamos la lista completa de proyectos para el linker. 
+// Idealmente esto vendría del padre o cacheado, pero por simplicidad y robustez lo pedimos aquí si no impacta rendimiento.
+// Dado que es SSG o estático, no hay problema.
+import { supabase } from '../../lib/supabase';
+const { data: allProjects } = await supabase.from('projects').select('*');
+
+const formatDate = (dateString: string | null) => {
+  if (!dateString) return 'Present';
+  return new Date(dateString).getFullYear().toString();
+};
+---
+
+<Layout title={`${project.name} - Oliver Martínez Haro`}>
+  <div class="max-w-4xl mx-auto">
+    <a href={lang === 'es' ? '/' : '/en'} class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors mb-8 group">
+      <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+      {lang === 'es' ? 'Volver' : 'Back'}
+    </a>
+
+    <div class="brutalist-card p-8 md:p-12 mb-12">
+      <div class="flex flex-col md:flex-row gap-8 items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-4 mb-6">
+            {project.logo_url && (
+              <img src={project.logo_url} alt={project.name} class="w-16 h-16 rounded-md bg-zinc-800" />
+            )}
+            <h1 class="text-4xl md:text-5xl font-bold uppercase tracking-tight">{project.name}</h1>
+          </div>
+
+          <div class="flex flex-wrap gap-4 mb-8 text-sm text-zinc-400">
+             <div class="flex items-center gap-2 px-3 py-1 border border-zinc-800 rounded-full">
+                {project.is_active ? <CheckCircle className="w-4 h-4 text-green-500" /> : <XCircle className="w-4 h-4 text-zinc-500" />}
+                <span class={project.is_active ? "text-green-500 font-bold" : ""}>
+                    {project.is_active ? t('project.active') : t('project.inactive')}
+                </span>
+             </div>
+             <div class="flex items-center gap-2 px-3 py-1 border border-zinc-800 rounded-full">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(project.start_date)} — {formatDate(project.end_date)}</span>
+             </div>
+          </div>
+
+          <p class="text-xl text-zinc-300 leading-relaxed mb-8">
+            {lang === 'es' ? project.short_description_es : project.short_description_en}
+          </p>
+
+          {project.url && (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-white text-black px-6 py-3 font-bold hover:bg-zinc-200 transition-colors">
+              {t('project.view')} <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8">
+        <div class="col-span-1 space-y-8">
+             <div class="brutalist-card">
+                <h2 class="text-2xl font-bold uppercase mb-6 border-b border-zinc-800 pb-4">{t('project.history')}</h2>
+                <div class="prose prose-invert max-w-none text-zinc-400 leading-loose whitespace-pre-line">
+                    <ProjectLinker 
+                        text={lang === 'es' ? project.history_es || '' : project.history_en || ''} 
+                        projects={allProjects || []} 
+                        currentProjectSlug={project.slug}
+                    />
+                </div>
+             </div>
+        </div>
+    </div>
+  </div>
+</Layout>

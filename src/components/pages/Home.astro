@@ -1,0 +1,151 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BentoItem from '../BentoItem.astro';
+import ProjectCard from '../ProjectCard.astro';
+import { supabase } from '../../lib/supabase';
+import type { Database } from '../../types/database.types';
+import { useTranslations } from '../../i18n/utils';
+import { Github, Mail, ArrowRight } from 'lucide-react';
+
+import ProjectLinker from '../ProjectLinker.astro';
+
+interface Props {
+  lang: 'es' | 'en';
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Fetch Data
+type Project = Database['public']['Tables']['projects']['Row'];
+type Post = Database['public']['Tables']['posts']['Row'];
+
+const { data: projects } = await supabase
+  .from('projects')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .returns<Project[]>();
+
+const { data: posts } = await supabase
+  .from('posts')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(1)
+  .returns<Post[]>();
+
+const activeProjects = projects?.filter((p: Project) => p.is_active) || [];
+const inactiveProjects = projects?.filter((p: Project) => !p.is_active) || [];
+const allProjects = projects || [];
+const latestPost = posts?.[0];
+
+const aboutText = lang === 'es' 
+  ? "Soy Oliver Martínez Haro, emprendedor y desarrollador web de 21 años. Comencé a emprender a los 16, explorando diversos sectores hasta consolidar mi proyecto más exitoso: Octopus Control, que me permitió establecerme como autónomo a los 20 años."
+  : "I am Oliver Martínez Haro, a 21-year-old entrepreneur and web developer. I started my entrepreneurial journey at 16, exploring various sectors until consolidating my most successful project: Octopus Control, which allowed me to become self-employed at 20.";
+
+---
+
+<Layout title="Oliver Martínez Haro - Portfolio">
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]">
+    
+    {/* Logo Block */}
+    <div class="col-span-1 md:col-span-2 lg:col-span-2 row-span-2 brutalist-card flex items-center justify-center p-0 overflow-hidden relative group">
+        <div class="absolute inset-0 bg-zinc-900/50 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
+        <img src="/logo.svg" alt="Logo" class="w-2/3 h-2/3 object-contain z-20 drop-shadow-2xl group-hover:scale-105 transition-transform duration-500" />
+    </div>
+
+    {/* About Me - Large Block */}
+    <BentoItem class="col-span-1 md:col-span-2 lg:col-span-2 row-span-2" title={t('section.about')}>
+      <div class="flex flex-col justify-center h-full">
+        <p class="text-xl md:text-2xl font-light leading-relaxed text-zinc-300">
+          <ProjectLinker text={aboutText} projects={allProjects} />
+        </p>
+      </div>
+    </BentoItem>
+
+    {/* Active Projects Title */}
+    <div class="col-span-1 md:col-span-3 lg:col-span-4 mt-8 mb-4 border-b border-zinc-800 pb-2">
+        <h2 class="text-2xl font-bold uppercase tracking-widest">{t('section.projects')}</h2>
+    </div>
+
+    {/* Active Projects Grid */}
+    {activeProjects.map((project: Project) => (
+      <div class="col-span-1 md:col-span-1 lg:col-span-1 row-span-1 h-64">
+        <ProjectCard 
+            title={project.name}
+            description={lang === 'es' ? project.short_description_es || '' : project.short_description_en || ''}
+            link={lang === 'es' ? `/projects/${project.slug}` : `/en/projects/${project.slug}`}
+            logo={project.logo_url || undefined}
+            status="active"
+        />
+      </div>
+    ))}
+
+    {/* Connect & Activity Section Header */}
+    <div class="col-span-1 md:col-span-3 lg:col-span-4 mt-12 mb-4 border-b border-zinc-800 pb-2">
+        <h2 class="text-2xl font-bold uppercase tracking-widest text-zinc-500">{t('section.connect')}</h2>
+    </div>
+
+    {/* Contact & Latest Post Section (Interim) */}
+    <div class="col-span-1 md:col-span-3 lg:col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+        
+        {/* Latest Post */}
+        <BentoItem class="col-span-1 md:col-span-2 relative group hover:bg-zinc-900 transition-colors" title={t('section.latest_post')}>
+            {latestPost ? (
+                <div class="flex flex-col h-full justify-between">
+                    <p class="text-zinc-300 line-clamp-3 italic text-lg group-hover:text-zinc-100 transition-colors">
+                        "<ProjectLinker 
+                            text={lang === 'es' ? latestPost.content_es : latestPost.content_en} 
+                            projects={allProjects} 
+                            linkClass="relative z-10"
+                        />"
+                    </p>
+                    <a href={lang === 'es' ? '/posts' : '/en/posts'} class="mt-4 flex items-center gap-2 text-sm font-bold text-zinc-500 group-hover:text-white transition-colors self-end after:absolute after:inset-0">
+                        {t('section.more_posts')} 
+                        <ArrowRight className="w-4 h-4 transition-all duration-500 -rotate-45 group-hover:rotate-0" />
+                    </a>
+                </div>
+            ) : (
+                <div class="flex items-center justify-center h-full text-zinc-600">
+                    No posts yet
+                </div>
+            )}
+        </BentoItem>
+
+        {/* Email */}
+        <a href="mailto:oliver@martinezharo.com" class="col-span-1 brutalist-card group flex flex-col items-center justify-center gap-4 hover:bg-zinc-900 transition-colors">
+            <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-full group-hover:border-zinc-600 transition-colors">
+                <Mail className="w-6 h-6 text-zinc-400 group-hover:text-white" />
+            </div>
+            <span class="font-medium text-zinc-400 group-hover:text-white">Email Me</span>
+        </a>
+
+        {/* GitHub */}
+        <a href="https://github.com/martinezharo" target="_blank" rel="noopener noreferrer" class="col-span-1 brutalist-card group flex flex-col items-center justify-center gap-4 hover:bg-zinc-900 transition-colors">
+             <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-full group-hover:border-zinc-600 transition-colors">
+                <Github className="w-6 h-6 text-zinc-400 group-hover:text-white" />
+            </div>
+            <span class="font-medium text-zinc-400 group-hover:text-white">GitHub</span>
+        </a>
+    </div>
+
+
+    {/* Past Projects Section */}
+    <div class="col-span-1 md:col-span-3 lg:col-span-4 mt-12 mb-4 border-b border-zinc-800 pb-2">
+        <h2 class="text-2xl font-bold uppercase tracking-widest text-zinc-500">{t('section.past_projects')}</h2>
+    </div>
+
+    {/* Past Projects Grid */}
+     {inactiveProjects.map((project: Project) => (
+      <div class="col-span-1 md:col-span-1 lg:col-span-1 row-span-1 h-48 opacity-75 hover:opacity-100 transition-opacity">
+        <ProjectCard 
+            title={project.name}
+            description={lang === 'es' ? project.short_description_es || '' : project.short_description_en || ''}
+            link={lang === 'es' ? `/projects/${project.slug}` : `/en/projects/${project.slug}`}
+            logo={project.logo_url || undefined}
+            status="inactive"
+        />
+      </div>
+    ))}
+
+  </div>
+</Layout>

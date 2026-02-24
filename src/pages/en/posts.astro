@@ -1,0 +1,8 @@
+---
+import PostsComponent from '../../components/pages/Posts.astro';
+
+// Cache for 60 seconds
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
+---
+
+<PostsComponent lang="en" />

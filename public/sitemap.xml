@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home Pages -->
+  <url>
+    <loc>https://olivermartinez.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Posts Pages -->
+  <url>
+    <loc>https://olivermartinez.com/posts</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/posts</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Project Pages ES -->
+  <url>
+    <loc>https://olivermartinez.com/projects/octopus-control</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/projects/rankmaker</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/projects/elitebara</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/projects/kenobismo</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/projects/goal-partner</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Project Pages EN -->
+  <url>
+    <loc>https://olivermartinez.com/en/projects/octopus-control</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/projects/rankmaker</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/projects/elitebara</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/projects/kenobismo</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/projects/goal-partner</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Legal Pages ES -->
+  <url>
+    <loc>https://olivermartinez.com/legal</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/privacy</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/cookies</loc>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Legal Pages EN -->
+  <url>
+    <loc>https://olivermartinez.com/en/legal</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/privacy</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://olivermartinez.com/en/cookies</loc>
+    <priority>0.3</priority>
+  </url>
+</urlset>

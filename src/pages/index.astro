@@ -1,0 +1,8 @@
+---
+import Home from '../components/pages/Home.astro';
+
+// Cache for 60 seconds
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
+---
+
+<Home lang="es" />

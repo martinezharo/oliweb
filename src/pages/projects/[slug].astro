@@ -1,0 +1,28 @@
+---
+import ProjectDetail from '../../components/pages/ProjectDetail.astro';
+import { supabase } from '../../lib/supabase';
+import type { Database } from '../../types/database.types';
+
+type Project = Database['public']['Tables']['projects']['Row'];
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const { data: project } = await supabase
+  .from('projects')
+  .select('*')
+  .eq('slug', slug)
+  .single();
+
+if (!project) {
+  return Astro.redirect('/404');
+}
+
+// Cache for 60 seconds
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
+---
+
+<ProjectDetail lang="es" project={project as Project} />

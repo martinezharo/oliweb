@@ -1,0 +1,45 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const { title, description = "Oliver Martínez Haro - Web Developer & Entrepreneur" } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-3Z2SJQ5VRV"></script>
+		<script is:inline>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-3Z2SJQ5VRV');
+		</script>
+	</head>
+	<body class="bg-zinc-950 text-zinc-50 font-sans min-h-screen flex flex-col selection:bg-white selection:text-black">
+		<Header />
+		<main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

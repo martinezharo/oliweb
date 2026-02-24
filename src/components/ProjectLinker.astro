@@ -1,0 +1,57 @@
+---
+import type { Database } from '../types/database.types';
+import { getLangFromUrl } from '../i18n/utils';
+
+type Project = Database['public']['Tables']['projects']['Row'];
+
+interface Props {
+  text: string;
+  projects: Project[];
+  currentProjectSlug?: string;
+  class?: string;
+  linkClass?: string;
+}
+
+const { text, projects, currentProjectSlug, class: className, linkClass } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+
+// Filtrar el proyecto actual para no auto-enlazarse a sí mismo
+const linkableProjects = projects.filter(p => p.slug !== currentProjectSlug);
+
+// Función para escapar HTML para prevenir XSS antes de insertar los enlaces
+const escapeHtml = (unsafe: string) => {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
+
+// Procesar el texto
+let processedText = escapeHtml(text);
+
+// Ordenar proyectos por longitud de nombre descendente para evitar reemplazar subcadenas primero
+// (aunque con word boundaries \b esto es menos problemático, es buena práctica)
+const sortedProjects = [...linkableProjects].sort((a, b) => b.name.length - a.name.length);
+
+sortedProjects.forEach(project => {
+    const projectUrl = lang === 'es' ? `/projects/${project.slug}` : `/en/projects/${project.slug}`;
+    // Regex: \b coincide con límites de palabra. 'g' global.
+    // Usamos el nombre del proyecto tal cual para la búsqueda.
+    // Nota: Si el nombre contiene caracteres especiales regex, habría que escaparlos.
+    const escapedName = project.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedName}\\b`, 'g');
+    
+    // Reemplazamos por un placeholder temporal para evitar re-enlace anidado si los nombres se solapan
+    // O simplemente hacemos el reemplazo directo si confiamos en que no hay solapamientos raros.
+    // Dado que ordenamos por longitud, el riesgo es menor.
+    
+    processedText = processedText.replace(regex, (match) => {
+        return `<a href="${projectUrl}" class="font-bold text-white hover:underline decoration-zinc-500 underline-offset-4 transition-all ${linkClass || ''}">${match}</a>`;
+    });
+});
+
+---
+
+<span class={className} set:html={processedText} />
