@@ -1,0 +1,1 @@
+- Remove mailto and make the contact button open a modal with the contact form or simply redirect to a contact page with the email address.
