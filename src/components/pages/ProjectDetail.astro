@@ -18,8 +18,7 @@ const t = useTranslations(lang);
 // Necesitamos la lista completa de proyectos para el linker. 
 // Idealmente esto vendría del padre o cacheado, pero por simplicidad y robustez lo pedimos aquí si no impacta rendimiento.
 // Dado que es SSG o estático, no hay problema.
-import { supabase } from '../../lib/supabase';
-const { data: allProjects } = await supabase.from('projects').select('*');
+import { projects as allProjects } from '../../lib/data';
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'Present';

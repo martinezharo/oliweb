@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import BentoItem from '../BentoItem.astro';
 import ProjectCard from '../ProjectCard.astro';
-import { supabase } from '../../lib/supabase';
+import { projects as rawProjects, posts as rawPosts } from '../../lib/data';
 import type { Database } from '../../types/database.types';
 import { useTranslations } from '../../i18n/utils';
 import { Github, Mail, ArrowRight } from 'lucide-react';
@@ -20,23 +20,13 @@ const t = useTranslations(lang);
 type Project = Database['public']['Tables']['projects']['Row'];
 type Post = Database['public']['Tables']['posts']['Row'];
 
-const { data: projects } = await supabase
-  .from('projects')
-  .select('*')
-  .order('created_at', { ascending: false })
-  .returns<Project[]>();
+const projects = [...rawProjects].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Project[];
+const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Post[];
 
-const { data: posts } = await supabase
-  .from('posts')
-  .select('*')
-  .order('created_at', { ascending: false })
-  .limit(1)
-  .returns<Post[]>();
-
-const activeProjects = projects?.filter((p: Project) => p.is_active) || [];
-const inactiveProjects = projects?.filter((p: Project) => !p.is_active) || [];
-const allProjects = projects || [];
-const latestPost = posts?.[0];
+const activeProjects = projects.filter((p: Project) => p.is_active);
+const inactiveProjects = projects.filter((p: Project) => !p.is_active);
+const allProjects = projects;
+const latestPost = posts[0];
 
 const aboutText = lang === 'es' 
   ? "Soy Oliver Martínez Haro, emprendedor y desarrollador web de 21 años. Comencé a emprender a los 16, explorando diversos sectores hasta consolidar mi proyecto más exitoso: Octopus Control, que me permitió establecerme como autónomo a los 20 años."

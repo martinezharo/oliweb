@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { supabase } from '../../lib/supabase';
+import { posts as rawPosts, projects as rawProjects } from '../../lib/data';
 import { useTranslations } from '../../i18n/utils';
 import { ArrowLeft, Clock } from 'lucide-react';
 import ProjectLinker from '../ProjectLinker.astro';
@@ -12,12 +12,9 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const { data: posts } = await supabase
-  .from('posts')
-  .select('*')
-  .order('created_at', { ascending: false });
+const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-const { data: allProjects } = await supabase.from('projects').select('*');
+const allProjects = rawProjects;
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
