@@ -11,18 +11,17 @@ Welcome to the repository of **olivermartinezharo.com**, also known as **Oliweb*
 
 - **Multilingual Support**: Fully localized in English and Spanish using Astro i18n features.
 - **Bento Grid Layout**: A modern, brutalist-inspired design showcasing information in a clean, organized grid.
-- **Dynamic Content**: Projects and blog posts are fetched dynamically from a **Supabase** backend.
+- **Static Content**: Projects and blog posts are served from local project data and built into the site at compile time.
 - **Optimized Performance**: Built with **Astro 5** for blazing-fast load times and minimal JavaScript.
 - **Responsive Design**: Tailored experience for mobile, tablet, and desktop using **Tailwind CSS**.
-- **Interactive UI**: Enhanced with **React** components and **Lucide Icons**.
+- **Interactive UI**: Uses **Astro** islands, the **React** integration, and **Lucide Icons** where needed.
 - **Edge Deployment**: Configured for **Cloudflare Pages** for global distribution and low latency.
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Astro](https://astro.build/)
-- **UI Library**: [React](https://react.dev/)
+- **UI Layer**: [Astro](https://astro.build/) with [React](https://react.dev/) integration for islands and [Lucide React](https://lucide.dev/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Database/Auth**: [Supabase](https://supabase.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Deployment**: [Cloudflare Pages](https://pages.cloudflare.com/)
 
@@ -32,7 +31,6 @@ Welcome to the repository of **olivermartinezharo.com**, also known as **Oliweb*
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/)
-- A Supabase account and project (for the data layer)
 
 ### Installation
 
@@ -48,20 +46,12 @@ Welcome to the repository of **olivermartinezharo.com**, also known as **Oliweb*
     # or
     pnpm install
     ```
-
-3.  **Environment Variables**:
-    Create a `.env` file in the root directory and add your Supabase credentials:
-    ```env
-    PUBLIC_SUPABASE_URL=your_supabase_url
-    PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-    ```
-
-4.  **Start the development server**:
+3.  **Start the development server**:
     ```bash
     npm run dev
     ```
 
-5.  **Build for production**:
+4.  **Build for production**:
     ```bash
     npm run build
     ```
