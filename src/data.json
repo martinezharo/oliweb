@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "id": "a6b7c8d9-1234-4567-890a-klipcodepost1",
+      "created_at": "2026-03-31T10:05:00.000000+00:00",
+      "content_es": "He participado en la Hackaton de Midudev y CubePath con un nuevo proyecto en el que he estado trabajando los últimos días: KlipCode, un gestor de snippets.",
+      "content_en": "I've participated in the Midudev and CubePath Hackathon with a new project I've been working on for the past few days: KlipCode, a snippet manager.",
+      "image_urls": [
+        "/imgs/posts/klipcode-img.png"
+      ]
+    },
+    {
       "id": "b1206fa6-84b1-4b84-9543-b6d46e013522",
       "created_at": "2026-02-10T14:46:59.963963+00:00",
       "content_es": "Estoy cambiando todas mis webs para desplegarlas en Cloudflare en lugar de Hostinger.",
@@ -42,6 +51,21 @@
     }
   ],
   "projects": [
+    {
+      "id": "e6a2b8c1-1234-4567-890a-klipcode0001",
+      "created_at": "2026-03-31T10:00:00.000000+00:00",
+      "slug": "klipcode",
+      "name": "KlipCode",
+      "is_active": true,
+      "start_date": "2026-01-01",
+      "end_date": null,
+      "url": "https://klipcode.com",
+      "logo_url": "/imgs/projects/klipcode.svg",
+      "short_description_es": "KlipCode es un gestor de snippets de código con almacenamiento local y sincronización opcional en la nube. Permite guardar, organizar y copiar fragmentos rápidamente, trabajar con carpetas jerárquicas y fijar elementos importantes.",
+      "history_es": "Tras ver un streaming de uno de mis mayores referentes en el desarrollo web: Midudev, sobre una hackatón, me animé a participar por primera vez en una.\n\nEstuve un par de días pensando qué hacer, finalmente me decidí por una herramienta que a mi mismo me sería de utilidad: un portapapeles de código en la nube.\n\nNormalmente programo en casa con mi ordenador principal o en la biblioteca con un portátil y en ocasiones me gustaría compartir pequeños fragmentos de código de forma temporal y rápida entre mis ordenadores sin tener que recurrir a GitHub.\nHasta ahora utilizaba Notion, pero no me resultaba tan cómodo como me gustaría. Necesitaba algo a lo que pudiese simplemente entrar y pegar, orientado específicamente al código.\n\nMe tomó un poco más de tiempo del que esperaba y no pude añadir todas las funcionalidades que había imaginado. Pero aún así acabe muy satisfecho con el resultado.",
+      "short_description_en": "KlipCode is a code snippet manager with local storage and optional cloud synchronization. It allows you to quickly save, organize, and copy snippets, work with hierarchical folders, and pin important items.",
+      "history_en": "After watching a stream by one of my biggest inspirations in web development, Midudev, about a hackathon, I decided to participate in one for the first time.\n\nI spent a couple of days thinking about what to create, and finally decided on a tool that would be useful for myself: a cloud-based code clipboard.\n\nUsually, I program at home on my main computer or at the library with a laptop, and sometimes I would like to share small code snippets temporarily and quickly between my computers without having to resort to GitHub.\nUntil now, I used Notion, but it wasn't as convenient as I would like. I needed something where I could simply jump in and paste, specifically oriented towards code.\n\nIt took a bit longer than I expected, and I couldn't add all the features I had imagined. But even so, I ended up very satisfied with the result."
+    },
     {
       "id": "f8f6ddec-1bde-48f0-8060-6a79846d64d6",
       "created_at": "2026-02-09T18:31:21.558248+00:00",
