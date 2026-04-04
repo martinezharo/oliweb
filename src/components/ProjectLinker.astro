@@ -28,8 +28,16 @@ const escapeHtml = (unsafe: string) => {
          .replace(/'/g, "&#039;");
  }
 
+// Regex para detectar URLs
+const urlRegex = /(https?:\/\/[^\s]+)/g;
+
 // Procesar el texto
 let processedText = escapeHtml(text);
+
+// Primero detectamos y enlazamos URLs
+processedText = processedText.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white underline decoration-zinc-700 hover:decoration-zinc-500 transition-colors break-all ${linkClass || ''}">${url}</a>`;
+});
 
 // Ordenar proyectos por longitud de nombre descendente para evitar reemplazar subcadenas primero
 // (aunque con word boundaries \b esto es menos problemático, es buena práctica)
