@@ -6,6 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://olivermartinezharo.com',
   output: 'static',
   integrations: [tailwind(), react(), sitemap()],
   i18n: {
