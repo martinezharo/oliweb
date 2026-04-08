@@ -8,6 +8,7 @@ import { useTranslations } from '../../i18n/utils';
 import { Github, Mail, ArrowRight } from 'lucide-react';
 
 import ProjectLinker from '../ProjectLinker.astro';
+import ContactModal from '../ContactModal.tsx';
 
 interface Props {
   lang: 'es' | 'en';
@@ -102,12 +103,22 @@ const aboutText = lang === 'es'
         </BentoItem>
 
         {/* Email */}
-        <a href="mailto:oliver@martinezharo.com" class="col-span-1 brutalist-card group flex flex-col items-center justify-center gap-4 hover:bg-zinc-900 transition-colors">
-            <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-full group-hover:border-zinc-600 transition-colors">
-                <Mail className="w-6 h-6 text-zinc-400 group-hover:text-white" />
-            </div>
-            <span class="font-medium text-zinc-400 group-hover:text-white">Email Me</span>
-        </a>
+        <ContactModal 
+            client:load 
+            apiAccessKey={import.meta.env.WEB3FORMS || ''}
+            translations={{
+                title: t('form.title'),
+                button: t('form.button'),
+                name: t('form.name'),
+                email: t('form.email'),
+                message: t('form.message'),
+                send: t('form.send'),
+                sending: t('form.sending'),
+                success: t('form.success'),
+                error: t('form.error'),
+                or_email: t('form.or_email'),
+            }}
+        />
 
         {/* GitHub */}
         <a href="https://github.com/martinezharo" target="_blank" rel="noopener noreferrer" class="col-span-1 brutalist-card group flex flex-col items-center justify-center gap-4 hover:bg-zinc-900 transition-colors">
