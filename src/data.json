@@ -75,7 +75,7 @@
       "start_date": "2026-01-01",
       "end_date": null,
       "url": "https://klipcode.com",
-      "logo_url": "/imgs/projects/klipcode.svg",
+      "logo_url": "/imgs/projects/klipcode.png",
       "short_description_es": "KlipCode es un gestor de snippets de código con almacenamiento local y sincronización opcional en la nube. Permite guardar, organizar y copiar fragmentos rápidamente, trabajar con carpetas jerárquicas y fijar elementos importantes.",
       "history_es": "Tras ver un streaming de uno de mis mayores referentes en el desarrollo web: Midudev, sobre una hackatón, me animé a participar por primera vez en una.\n\nEstuve un par de días pensando qué hacer, finalmente me decidí por una herramienta que a mi mismo me sería de utilidad: un portapapeles de código en la nube.\n\nNormalmente programo en casa con mi ordenador principal o en la biblioteca con un portátil y en ocasiones me gustaría compartir pequeños fragmentos de código de forma temporal y rápida entre mis ordenadores sin tener que recurrir a GitHub.\nHasta ahora utilizaba Notion, pero no me resultaba tan cómodo como me gustaría. Necesitaba algo a lo que pudiese simplemente entrar y pegar, orientado específicamente al código.\n\nMe tomó un poco más de tiempo del que esperaba y no pude añadir todas las funcionalidades que había imaginado. Pero aún así acabe muy satisfecho con el resultado.",
       "short_description_en": "KlipCode is a code snippet manager with local storage and optional cloud synchronization. It allows you to quickly save, organize, and copy snippets, work with hierarchical folders, and pin important items.",
