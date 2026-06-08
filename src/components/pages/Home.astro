@@ -21,7 +21,7 @@ const t = useTranslations(lang);
 type Project = Database['public']['Tables']['projects']['Row'];
 type Post = Database['public']['Tables']['posts']['Row'];
 
-const projects = [...rawProjects].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Project[];
+const projects = [...rawProjects].sort((a, b) => new Date(a.start_date ?? a.created_at).getTime() - new Date(b.start_date ?? b.created_at).getTime()) as Project[];
 const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Post[];
 
 const activeProjects = projects.filter((p: Project) => p.is_active);
