@@ -1,6 +1,13 @@
 {
   "posts": [
     {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "created_at": "2026-06-08T10:28:00.000000+02:00",
+      "content_es": "Fewya fue finalmente liberado hace unos días → https://fewya.com\n\nTambién he creado recientemente un nuevo miniproyecto para limpiar etiquetas y atributos de un HTML → https://striptag.4oli.com",
+      "content_en": "Fewya was finally released a few days ago → https://fewya.com\n\nI've also recently created a new mini-project for cleaning HTML tags and attributes → https://striptag.4oli.com",
+      "image_urls": []
+    },
+    {
       "id": "e5d4c3b2-1a2b-3c4d-5e6f-fewya0001",
       "created_at": "2026-05-16T18:13:00.000000+02:00",
       "content_es": "¡Nuevo proyecto! Próximamente publicaré un marketplace llamado Fewya. Sólo me quedan unos últimos ajustes y tests para lanzar el MVP. Cuando esté disponible se podrá acceder desde https://fewya.com",
