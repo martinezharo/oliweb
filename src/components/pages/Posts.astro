@@ -53,12 +53,12 @@ const formatDate = (dateString: string) => {
                     </p>
 
                     {post.image_urls && post.image_urls.length > 0 && (
-                        <div class={`grid gap-2 mt-4 ${post.image_urls.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                        <div class={`grid gap-2 mt-4 ${post.image_urls.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`} data-gallery>
                             {post.image_urls.map((url) => (
-                                <img 
-                                    src={url} 
-                                    alt="Post attachment" 
-                                    class="rounded-sm border border-zinc-800 w-full h-auto object-cover max-h-96" 
+                                <img
+                                    src={url}
+                                    alt="Post attachment"
+                                    class="rounded-sm border border-zinc-800 w-full h-auto object-cover max-h-96 cursor-zoom-in transition-opacity hover:opacity-90"
                                     loading="lazy"
                                 />
                             ))}
@@ -69,4 +69,96 @@ const formatDate = (dateString: string) => {
         ))}
     </div>
   </div>
+
+  {/* Fullscreen image viewer */}
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/95 backdrop-blur-sm select-none"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image viewer"
+  >
+    <button id="lightbox-close" type="button" aria-label="Close" class="absolute top-4 right-4 z-20 p-2 text-zinc-400 hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+
+    <div id="lightbox-counter" class="absolute top-6 left-1/2 -translate-x-1/2 z-20 text-sm font-mono text-zinc-400"></div>
+
+    <button id="lightbox-prev" type="button" aria-label="Previous image" class="absolute left-2 md:left-4 z-20 p-2 md:p-3 text-zinc-200 hover:text-white bg-black/40 hover:bg-black/70 rounded-full transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+
+    <button id="lightbox-next" type="button" aria-label="Next image" class="absolute right-2 md:right-4 z-20 p-2 md:p-3 text-zinc-200 hover:text-white bg-black/40 hover:bg-black/70 rounded-full transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+
+    <img id="lightbox-image" src="" alt="Post attachment" class="max-h-[90vh] max-w-[92vw] object-contain" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const imgEl = document.getElementById('lightbox-image') as HTMLImageElement | null;
+    const counter = document.getElementById('lightbox-counter');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const closeBtn = document.getElementById('lightbox-close');
+
+    if (lightbox && imgEl && counter && prevBtn && nextBtn && closeBtn) {
+      let images: string[] = [];
+      let index = 0;
+
+      const render = () => {
+        imgEl.src = images[index] ?? '';
+        const multi = images.length > 1;
+        counter.textContent = multi ? `${index + 1} / ${images.length}` : '';
+        prevBtn.style.display = multi ? '' : 'none';
+        nextBtn.style.display = multi ? '' : 'none';
+      };
+
+      const open = (srcs: string[], start: number) => {
+        images = srcs;
+        index = start;
+        render();
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      };
+
+      const close = () => {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+        imgEl.src = '';
+      };
+
+      const next = () => { index = (index + 1) % images.length; render(); };
+      const prev = () => { index = (index - 1 + images.length) % images.length; render(); };
+
+      document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+        const imgs = Array.from(gallery.querySelectorAll('img'));
+        const srcs = imgs.map((im) => im.getAttribute('src') ?? '');
+        imgs.forEach((im, i) => im.addEventListener('click', () => open(srcs, i)));
+      });
+
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+      closeBtn.addEventListener('click', (e) => { e.stopPropagation(); close(); });
+      imgEl.addEventListener('click', (e) => e.stopPropagation());
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowRight') next();
+        else if (e.key === 'ArrowLeft') prev();
+      });
+
+      let touchStartX = 0;
+      lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+      lightbox.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(dx) > 50 && images.length > 1) { dx < 0 ? next() : prev(); }
+      });
+    }
+  </script>
 </Layout>
