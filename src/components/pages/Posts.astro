@@ -48,7 +48,7 @@ const formatDate = (dateString: string) => {
                         <time>{formatDate(post.created_at)}</time>
                     </div>
 
-                    <p class="text-zinc-200 text-lg leading-relaxed whitespace-pre-wrap">
+                    <p class="text-zinc-200 text-lg leading-relaxed whitespace-pre-wrap break-words">
                         <ProjectLinker text={lang === 'es' ? post.content_es : post.content_en} projects={allProjects || []} />
                     </p>
 

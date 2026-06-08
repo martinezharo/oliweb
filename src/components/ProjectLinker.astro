@@ -36,7 +36,7 @@ let processedText = escapeHtml(text);
 
 // Primero detectamos y enlazamos URLs
 processedText = processedText.replace(urlRegex, (url) => {
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white underline decoration-zinc-700 hover:decoration-zinc-500 transition-colors break-all ${linkClass || ''}">${url}</a>`;
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white underline decoration-zinc-700 hover:decoration-zinc-500 transition-colors ${linkClass || ''}">${url}</a>`;
 });
 
 // Ordenar proyectos por longitud de nombre descendente para evitar reemplazar subcadenas primero
