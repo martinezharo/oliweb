@@ -1,6 +1,13 @@
 {
   "posts": [
     {
+      "id": "f8e9d0c1-b2a3-4567-8901-rankmaker001",
+      "created_at": "2026-06-11T01:49:36.000000+02:00",
+      "content_es": "Para celebrar el primer aniversario de RANKMAKER finalmente he habilitado la opción para que todo el mundo pueda crear una plantilla.\n\nNo tenía planeado hacerlo, pero no puedo parar de hacer cosas con Fable 5. 😭",
+      "content_en": "To celebrate the first anniversary of RANKMAKER, I've finally enabled the option for everyone to create a template.\n\nI wasn't planning to do it, but I can't stop doing things with Fable 5. 😭",
+      "image_urls": []
+    },
+    {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
       "created_at": "2026-06-08T10:28:00.000000+02:00",
       "content_es": "Fewya fue finalmente liberado hace unos días → https://fewya.com\n\nTambién he creado recientemente un nuevo miniproyecto para limpiar etiquetas y atributos de un HTML → https://striptag.4oli.com",
