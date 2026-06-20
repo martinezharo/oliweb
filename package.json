@@ -6,9 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "db:migrate": "node scripts/migrate-from-json.mjs",
+    "db:local": "wrangler d1 execute oliweb --local --file=./schema.sql && wrangler d1 execute oliweb --local --file=./seed.sql",
+    "db:remote": "wrangler d1 execute oliweb --remote --file=./schema.sql && wrangler d1 execute oliweb --remote --file=./seed.sql"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/tailwind": "^6.0.2",

@@ -1,0 +1,12 @@
+name = "oliweb"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+# Cloudflare D1 database binding.
+# Create the remote DB once with:  wrangler d1 create oliweb
+# then paste the returned database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "oliweb"
+database_id = "1bbfb1cd-32ef-4e71-82f3-1cdf7110d570"
