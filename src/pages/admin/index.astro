@@ -1,0 +1,77 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getDB, getPosts, getProjects } from '../../lib/data';
+
+const db = getDB(Astro.locals);
+const [posts, projects] = await Promise.all([getPosts(db), getProjects(db)]);
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<AdminLayout title="Dashboard">
+  <!-- Projects -->
+  <section class="mb-12">
+    <div class="flex items-center justify-between mb-4 border-b border-zinc-800 pb-2">
+      <h2 class="text-xl font-bold uppercase tracking-widest">Proyectos ({projects.length})</h2>
+      <a href="/admin/projects/new" class="bg-white text-black text-sm font-bold px-3 py-1.5 hover:bg-zinc-200 transition-colors">+ Nuevo</a>
+    </div>
+    <ul class="divide-y divide-zinc-900">
+      {projects.map((p) => (
+        <li class="flex items-center justify-between py-3 gap-4">
+          <div class="min-w-0">
+            <span class="font-medium">{p.name}</span>
+            <span class="text-zinc-600 text-sm ml-2">/{p.slug}</span>
+            {p.is_active
+              ? <span class="text-green-500 text-xs ml-2">● activo</span>
+              : <span class="text-zinc-600 text-xs ml-2">○ inactivo</span>}
+          </div>
+          <div class="flex items-center gap-3 text-sm shrink-0">
+            <a href={`/admin/projects/${p.id}/edit`} class="text-zinc-400 hover:text-white transition-colors">Editar</a>
+            <button data-delete="projects" data-id={p.id} data-name={p.name} class="text-red-500 hover:text-red-400 transition-colors">Borrar</button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Posts -->
+  <section>
+    <div class="flex items-center justify-between mb-4 border-b border-zinc-800 pb-2">
+      <h2 class="text-xl font-bold uppercase tracking-widest">Posts ({posts.length})</h2>
+      <a href="/admin/posts/new" class="bg-white text-black text-sm font-bold px-3 py-1.5 hover:bg-zinc-200 transition-colors">+ Nuevo</a>
+    </div>
+    <ul class="divide-y divide-zinc-900">
+      {posts.map((p) => (
+        <li class="flex items-center justify-between py-3 gap-4">
+          <div class="min-w-0">
+            <span class="text-zinc-500 text-xs font-mono mr-3">{fmt(p.created_at)}</span>
+            <span class="text-zinc-300">{p.content_es.slice(0, 60)}{p.content_es.length > 60 ? '…' : ''}</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm shrink-0">
+            <a href={`/admin/posts/${p.id}/edit`} class="text-zinc-400 hover:text-white transition-colors">Editar</a>
+            <button data-delete="posts" data-id={p.id} data-name="este post" class="text-red-500 hover:text-red-400 transition-colors">Borrar</button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <script>
+    document.querySelectorAll('button[data-delete]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const el = btn as HTMLButtonElement;
+        const type = el.dataset.delete;
+        const id = el.dataset.id;
+        const name = el.dataset.name;
+        if (!confirm(`¿Borrar ${name}?`)) return;
+        const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          location.reload();
+        } else {
+          alert('Error al borrar');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

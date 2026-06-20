@@ -1,0 +1,40 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { SESSION_COOKIE, checkPassword, createSession, sessionCookieOptions } from '../../lib/auth';
+
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const password = Astro.locals.runtime?.env?.ADMIN_PASSWORD;
+  const form = await Astro.request.formData();
+  const attempt = String(form.get('password') ?? '');
+
+  if (password && checkPassword(password, attempt)) {
+    const token = await createSession(password);
+    Astro.cookies.set(SESSION_COOKIE, token, sessionCookieOptions);
+    return Astro.redirect('/admin');
+  }
+  error = 'Contraseña incorrecta';
+}
+---
+
+<AdminLayout title="Login" bare>
+  <div class="max-w-sm mx-auto mt-24">
+    <h1 class="text-2xl font-bold uppercase tracking-widest mb-8 text-center">Admin</h1>
+    <form method="POST" class="space-y-4">
+      <input
+        type="password"
+        name="password"
+        placeholder="Contraseña"
+        autocomplete="current-password"
+        required
+        autofocus
+        class="w-full bg-zinc-900 border border-zinc-800 px-4 py-3 focus:border-zinc-500 outline-none"
+      />
+      {error && <p class="text-red-500 text-sm">{error}</p>}
+      <button type="submit" class="w-full bg-white text-black font-bold px-4 py-3 hover:bg-zinc-200 transition-colors">
+        Entrar
+      </button>
+    </form>
+  </div>
+</AdminLayout>

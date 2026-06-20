@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  /** Hide the top nav (e.g. on the login screen). */
+  bare?: boolean;
+}
+
+const { title, bare = false } = Astro.props;
+
+// Admin must never be cached or indexed.
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} · Admin</title>
+  </head>
+  <body class="bg-zinc-950 text-zinc-50 font-sans min-h-screen">
+    {!bare && (
+      <header class="border-b border-zinc-800">
+        <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+          <a href="/admin" class="font-bold uppercase tracking-widest text-sm">Admin</a>
+          <div class="flex items-center gap-4 text-sm">
+            <a href="/" class="text-zinc-400 hover:text-white transition-colors">Ver sitio</a>
+            <form method="POST" action="/admin/logout" class="inline">
+              <button type="submit" class="text-zinc-400 hover:text-white transition-colors">Salir</button>
+            </form>
+          </div>
+        </nav>
+      </header>
+    )}
+    <main class="max-w-4xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+  </body>
+</html>

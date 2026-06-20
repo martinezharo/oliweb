@@ -1,0 +1,18 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import ProjectForm from '../../../../components/admin/ProjectForm.astro';
+import { getDB, getProjectById } from '../../../../lib/data';
+
+const { id } = Astro.params;
+const project = id ? await getProjectById(getDB(Astro.locals), id) : null;
+
+if (!project) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<AdminLayout title="Editar proyecto">
+  <a href="/admin" class="text-zinc-400 hover:text-white text-sm mb-6 inline-block">← Volver</a>
+  <h1 class="text-2xl font-bold uppercase tracking-widest mb-8">Editar proyecto</h1>
+  <ProjectForm project={project} />
+</AdminLayout>

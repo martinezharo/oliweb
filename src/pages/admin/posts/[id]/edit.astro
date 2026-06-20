@@ -1,0 +1,18 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import PostForm from '../../../../components/admin/PostForm.astro';
+import { getDB, getPostById } from '../../../../lib/data';
+
+const { id } = Astro.params;
+const post = id ? await getPostById(getDB(Astro.locals), id) : null;
+
+if (!post) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<AdminLayout title="Editar post">
+  <a href="/admin" class="text-zinc-400 hover:text-white text-sm mb-6 inline-block">← Volver</a>
+  <h1 class="text-2xl font-bold uppercase tracking-widest mb-8">Editar post</h1>
+  <PostForm post={post} />
+</AdminLayout>
