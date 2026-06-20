@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { posts as rawPosts, projects as rawProjects } from '../../lib/data';
+import { getDB, getPosts, getProjects } from '../../lib/data';
 import { useTranslations } from '../../i18n/utils';
 import { ArrowLeft, Clock } from 'lucide-react';
 import ProjectLinker from '../ProjectLinker.astro';
@@ -12,9 +12,10 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+const db = getDB(Astro.locals);
+const [rawPosts, allProjects] = await Promise.all([getPosts(db), getProjects(db)]);
 
-const allProjects = rawProjects;
+const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {

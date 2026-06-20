@@ -1,18 +1,19 @@
 ---
 import ProjectDetail from '../../../components/pages/ProjectDetail.astro';
-import { projects } from '../../../lib/data';
+import { getDB, getProjectBySlug } from '../../../lib/data';
 import type { Database } from '../../../types/database.types';
 
 type Project = Database['public']['Tables']['projects']['Row'];
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+const { slug } = Astro.params;
+const project = slug ? await getProjectBySlug(getDB(Astro.locals), slug) : null;
+
+if (!project) {
+  return new Response(null, { status: 404 });
 }
 
-const { project } = Astro.props;
+// Cache for 60 seconds (matches the rest of the public site)
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
 ---
 
 <ProjectDetail lang="en" project={project as Project} />

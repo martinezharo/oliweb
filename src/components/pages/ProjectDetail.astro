@@ -4,6 +4,7 @@ import { useTranslations } from '../../i18n/utils';
 import { ArrowLeft, ExternalLink, Calendar, CheckCircle, XCircle } from 'lucide-react';
 import type { Database } from '../../types/database.types';
 import ProjectLinker from '../ProjectLinker.astro';
+import { getDB, getProjects } from '../../lib/data';
 
 type Project = Database['public']['Tables']['projects']['Row'];
 
@@ -15,10 +16,8 @@ interface Props {
 const { lang, project } = Astro.props;
 const t = useTranslations(lang);
 
-// Necesitamos la lista completa de proyectos para el linker. 
-// Idealmente esto vendría del padre o cacheado, pero por simplicidad y robustez lo pedimos aquí si no impacta rendimiento.
-// Dado que es SSG o estático, no hay problema.
-import { projects as allProjects } from '../../lib/data';
+// Lista completa de proyectos para el linker (auto-enlazado de nombres).
+const allProjects = await getProjects(getDB(Astro.locals));
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'Present';

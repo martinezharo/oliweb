@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import BentoItem from '../BentoItem.astro';
 import ProjectCard from '../ProjectCard.astro';
-import { projects as rawProjects, posts as rawPosts } from '../../lib/data';
+import { getDB, getProjects, getPosts } from '../../lib/data';
 import type { Database } from '../../types/database.types';
 import { useTranslations } from '../../i18n/utils';
 import { Github, Mail, ArrowRight } from 'lucide-react';
@@ -20,6 +20,9 @@ const t = useTranslations(lang);
 // Fetch Data
 type Project = Database['public']['Tables']['projects']['Row'];
 type Post = Database['public']['Tables']['posts']['Row'];
+
+const db = getDB(Astro.locals);
+const [rawProjects, rawPosts] = await Promise.all([getProjects(db), getPosts(db)]);
 
 const projects = [...rawProjects].sort((a, b) => new Date(a.start_date ?? a.created_at).getTime() - new Date(b.start_date ?? b.created_at).getTime()) as Project[];
 const posts = [...rawPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Post[];
