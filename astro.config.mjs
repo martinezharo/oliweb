@@ -25,5 +25,16 @@ export default defineConfig({
     routing: {
       prefixDefaultLocale: false
     }
-  }
+  },
+  vite: {
+    resolve: {
+      // React 19's `react-dom/server.browser` relies on `MessageChannel`,
+      // which doesn't exist in the Cloudflare Workers runtime. Use the edge
+      // build (Web Streams based) for SSR in production builds only, so the
+      // local dev server keeps working unchanged.
+      alias: process.env.NODE_ENV === 'production'
+        ? { 'react-dom/server': 'react-dom/server.edge' }
+        : undefined,
+    },
+  },
 });
